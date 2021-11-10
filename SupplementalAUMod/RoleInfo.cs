@@ -1,0 +1,85 @@
+using HarmonyLib;
+using System.Linq;
+using System;
+using System.Collections.Generic;
+using static AUMod.Roles;
+using UnityEngine;
+
+namespace AUMod {
+class RoleInfo {
+    public Color color;
+    public string name;
+    public string introDescription;
+    public string shortDescription;
+    public RoleId roleId;
+
+    RoleInfo(string name, Color color, string introDescription, string shortDescription, RoleId roleId)
+    {
+        this.color = color;
+        this.name = name;
+        this.introDescription = introDescription;
+        this.shortDescription = shortDescription;
+        this.roleId = roleId;
+    }
+
+    /*
+     * TODO
+    public static RoleInfo sheriff = new RoleInfo(
+        "Sheriff",
+        Sheriff.color,
+        "Shoot the <color=#FF1919FF>Impostors</color>",
+        "Shoot the Impostors",
+        RoleId.Sheriff);
+     */
+    public static RoleInfo madmate = new RoleInfo(
+        "Madmate",
+        Madmate.color,
+        "Help the <color=#FF1919FF>Impostors</color>",
+        "Help the Impostors",
+        RoleId.Madmate);
+    /*
+     * TODO
+    public static RoleInfo impostor = new RoleInfo(
+        "Impostor",
+        Palette.ImpostorRed,
+        Helpers.cs(Palette.ImpostorRed, "Sabotage and kill everyone"),
+        "Sabotage and kill everyone", RoleId.Impostor);
+    public static RoleInfo crewmate = new RoleInfo(
+        "Crewmate", Color.white,
+        "Find the Impostors",
+        "Find the Impostors",
+        RoleId.Crewmate);
+     */
+
+    public static List<RoleInfo> allRoleInfos = new List<RoleInfo>() {
+        // TODO
+        // sheriff,
+        madmate
+    };
+
+    public static List<RoleInfo> getRoleInfoForPlayer(PlayerControl p)
+    {
+        List<RoleInfo> infos = new List<RoleInfo>();
+        if (p == null)
+            return infos;
+
+        // Special roles
+        /*
+         * TODO
+        if (p == Sheriff.sheriff)
+            infos.Add(sheriff);
+         */
+        if (p == Madmate.madmate)
+            infos.Add(madmate);
+
+        return infos;
+    }
+
+    public static String GetRole(PlayerControl p)
+    {
+        string roleName;
+        roleName = String.Join("", getRoleInfoForPlayer(p).Select(x => x.name).ToArray());
+        return roleName;
+    }
+}
+}
