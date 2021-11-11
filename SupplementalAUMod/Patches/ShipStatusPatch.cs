@@ -23,8 +23,7 @@ namespace AUMod.Patches
             if (player == null || player.IsDead) // IsDead
                 __result = __instance.MaxLightRadius;
             // Impostor, Jackal/Sidekick, Spy, or Madmate with Impostor vision
-            else if (player.Role.IsImpostor ||
-                (Madmate.madmate != null && Madmate.madmate.PlayerId == player.PlayerId && Madmate.hasImpostorVision))
+            else if (player.Role.IsImpostor || (Madmate.madmate != null && Madmate.madmate.PlayerId == player.PlayerId && Madmate.hasImpostorVision))
                 __result = __instance.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
             else
                 __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, num) * PlayerControl.GameOptions.CrewLightMod;
@@ -38,14 +37,22 @@ namespace AUMod.Patches
             __result = false;
         }
 
-        private static int originalNumCommonTasksOption = 0;
-        private static int originalNumShortTasksOption = 0;
-        private static int originalNumLongTasksOption = 0;
+        /*
+         * TODO
+         * Number of Tasks
+         */
+        /* private static int originalNumCommonTasksOption = 0; */
+        /* private static int originalNumShortTasksOption = 0; */
+        /* private static int originalNumLongTasksOption = 0; */
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Begin))]
         public static bool Prefix(ShipStatus __instance)
         {
+            /*
+             * TODO
+             * Number of Tasks
+             */
             /* var commonTaskCount = __instance.CommonTasks.Count; */
             /* var normalTaskCount = __instance.NormalTasks.Count; */
             /* var longTaskCount = __instance.LongTasks.Count; */
@@ -65,6 +72,10 @@ namespace AUMod.Patches
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Begin))]
         public static void Postfix3(ShipStatus __instance)
         {
+            /*
+             * TODO
+             * Number of Tasks
+             */
             // Restore original settings after the tasks have been selected
             /* PlayerControl.GameOptions.NumCommonTasks = originalNumCommonTasksOption; */
             /* PlayerControl.GameOptions.NumShortTasks = originalNumShortTasksOption; */

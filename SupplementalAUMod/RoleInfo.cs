@@ -37,8 +37,6 @@ class RoleInfo {
         "Help the <color=#FF1919FF>Impostors</color>",
         "Help the Impostors",
         RoleId.Madmate);
-    /*
-     * TODO
     public static RoleInfo impostor = new RoleInfo(
         "Impostor",
         Palette.ImpostorRed,
@@ -49,9 +47,10 @@ class RoleInfo {
         "Find the Impostors",
         "Find the Impostors",
         RoleId.Crewmate);
-     */
 
     public static List<RoleInfo> allRoleInfos = new List<RoleInfo>() {
+        impostor,
+        crewmate,
         // TODO
         // sheriff,
         madmate
@@ -71,6 +70,10 @@ class RoleInfo {
          */
         if (p == Madmate.madmate)
             infos.Add(madmate);
+        if (infos.Count == 0 && p.Data.Role.IsImpostor)
+            infos.Add(impostor);
+        if (infos.Count == 0 && !p.Data.Role.IsImpostor)
+            infos.Add(crewmate);
 
         return infos;
     }

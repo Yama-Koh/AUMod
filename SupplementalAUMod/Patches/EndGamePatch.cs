@@ -48,17 +48,18 @@ namespace AUMod.Patches
                 case GameOverReason.HumansByVote:
                 case GameOverReason.HumansByTask:
                 case GameOverReason.ImpostorDisconnect:
-                  if (!playerControl.Data.Role.IsImpostor && !(playerControl.Data.PlayerId == Madmate.madmate.PlayerId))
-                    TempData.winners.Add(new WinningPlayerData(playerControl.Data));
-                  break;
-                case GameOverReason.ImpostorByKill:
+                    if (!playerControl.Data.Role.IsImpostor && !(playerControl.Data.PlayerId == Madmate.madmate.PlayerId))
+                        TempData.winners.Add(new WinningPlayerData(playerControl.Data));
+                    break;
                 case GameOverReason.ImpostorByVote:
+                case GameOverReason.ImpostorByKill:
+                case GameOverReason.ImpostorBySabotage:
                 case GameOverReason.HumansDisconnect:
-                  if (playerControl.Data.Role.IsImpostor)
-                    TempData.winners.Add(new WinningPlayerData(playerControl.Data));
-                  if (playerControl.Data.PlayerId == Madmate.madmate.PlayerId)
-                    TempData.winners.Add(new WinningPlayerData(playerControl.Data));
-                  break;
+                    if (playerControl.Data.Role.IsImpostor)
+                        TempData.winners.Add(new WinningPlayerData(playerControl.Data));
+                    if (playerControl.Data.PlayerId == Madmate.madmate.PlayerId)
+                        TempData.winners.Add(new WinningPlayerData(playerControl.Data));
+                    break;
                 }
             }
 
@@ -108,6 +109,10 @@ namespace AUMod.Patches
             if (DestroyableSingleton<TutorialManager>.InstanceExists) // InstanceExists | Don't check Custom Criteria when in Tutorial
                 return true;
             var statistics = new PlayerStatistics(__instance);
+            if (CheckAndEndGameForSabotageWin(__instance))
+                return false;
+            if (CheckAndEndGameForTaskWin(__instance))
+                return false;
             if (CheckAndEndGameForImpostorWin(__instance, statistics))
                 return false;
             if (CheckAndEndGameForCrewmateWin(__instance, statistics))
@@ -155,7 +160,7 @@ namespace AUMod.Patches
 
         private static bool CheckAndEndGameForImpostorWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && !(statistics.TeamImpostorHasAliveLover && statistics.TeamLoversAlive == 2)) {
+            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive) {
                 __instance.enabled = false;
                 GameOverReason endReason;
                 switch (TempData.LastDeathReason) {
@@ -177,7 +182,7 @@ namespace AUMod.Patches
 
         private static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0) {
+            if (statistics.TeamImpostorsAlive == 0) {
                 __instance.enabled = false;
                 ShipStatus.RpcEndGame(GameOverReason.HumansByVote, false);
                 return true;
@@ -195,11 +200,7 @@ namespace AUMod.Patches
 
     internal class PlayerStatistics {
         public int TeamImpostorsAlive { get; set; }
-        public int TeamJackalAlive { get; set; }
-        public int TeamLoversAlive { get; set; }
         public int TotalAlive { get; set; }
-        public bool TeamImpostorHasAliveLover { get; set; }
-        public bool TeamJackalHasAliveLover { get; set; }
 
         public PlayerStatistics(ShipStatus __instance)
         {
