@@ -1,7 +1,7 @@
 using HarmonyLib;
 using Hazel;
 using static AUMod.Roles;
-/* using static TheOtherRoles.HudManagerStartPatch; */
+using static AUMod.HudManagerStartPatch;
 using static AUMod.GameHistory;
 using static AUMod.MapOptions;
 using AUMod.Patches;
@@ -34,8 +34,7 @@ enum CustomRPC {
 
     // Role functionality
 
-    // TODO
-    // SheriffKill,
+    SheriffKill = 81,
 }
 
 public static class RPCProcedure {
@@ -47,7 +46,7 @@ public static class RPCProcedure {
         clearAndReloadMapOptions();
         clearAndReloadRoles();
         clearGameHistory();
-        /* setCustomButtonCooldowns(); */
+        setCustomButtonCooldowns();
     }
 
     /*
@@ -76,8 +75,7 @@ public static class RPCProcedure {
             if (player.PlayerId == playerId) {
                 switch ((RoleId)roleId) {
                 case RoleId.Sheriff:
-                    // TODO
-                    /* Sheriff.sheriff = player; */
+                    Sheriff.sheriff = player;
                     break;
                 case RoleId.Madmate:
                     Madmate.madmate = player;
@@ -143,8 +141,6 @@ public static class RPCProcedure {
 
     // Role functionality
 
-    /*
-     * TODO
     public static void sheriffKill(byte targetId)
     {
         foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
@@ -154,7 +150,6 @@ public static class RPCProcedure {
             }
         }
     }
-     */
 }
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
@@ -228,13 +223,10 @@ class RPCHandlerPatch {
             break;
          */
 
-            // Role functionality
-            /*
-         * TODO
+        // Role functionality
         case (byte)CustomRPC.SheriffKill:
             RPCProcedure.sheriffKill(reader.ReadByte());
             break;
-         */
         }
     }
 }

@@ -101,6 +101,39 @@ public static class Helpers {
             player.Data.Tasks.Clear();
     }
 
+    public static void refreshRoleDescription(PlayerControl player)
+    {
+        if (player == null)
+            return;
+
+        List<RoleInfo> infos = RoleInfo.getRoleInfoForPlayer(player);
+
+        var toRemove = new List<PlayerTask>();
+        foreach (PlayerTask t in player.myTasks) {
+            var textTask = t.gameObject.GetComponent<ImportantTextTask>();
+            if (textTask != null) {
+                var info = infos.FirstOrDefault(x => textTask.Text.StartsWith(x.name));
+                if (info != null)
+                    infos.Remove(info); // TextTask for this RoleInfo does not have to be added, as it already exists
+                else
+                    toRemove.Add(t); // TextTask does not have a corresponding RoleInfo and will hence be deleted
+            }
+        }
+
+        foreach (PlayerTask t in toRemove) {
+            t.OnRemove();
+            player.myTasks.Remove(t);
+            UnityEngine.Object.Destroy(t.gameObject);
+        }
+
+        // Add TextTask for remaining RoleInfos
+        foreach (RoleInfo roleInfo in infos) {
+            var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
+            task.transform.SetParent(player.transform, false);
+            task.Text = cs(roleInfo.color, $"{roleInfo.name}: {roleInfo.shortDescription}");
+            player.myTasks.Insert(0, task);
+        }
+    }
     public static string GetString(this TranslationController t, StringNames key, params Il2CppSystem.Object[] parts)
     {
         return t.GetString(key, parts);

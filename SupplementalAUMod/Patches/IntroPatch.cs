@@ -18,9 +18,9 @@ namespace AUMod.Patches
             List<RoleInfo> infos = RoleInfo.getRoleInfoForPlayer(PlayerControl.LocalPlayer);
             RoleInfo roleInfo = infos.FirstOrDefault();
 
-            // TODO
-            // add sheriff
-            if (roleInfo != null && (roleInfo.roleId == RoleId.Madmate)) {
+            if (roleInfo != null &&
+                (roleInfo.roleId == RoleId.Madmate ||
+                 roleInfo.roleId == RoleId.Sheriff)) {
                 __instance.TeamTitle.text = roleInfo.name;
                 __instance.ImpostorText.gameObject.SetActive(true);
                 __instance.ImpostorText.text = roleInfo.introDescription;
@@ -33,9 +33,9 @@ namespace AUMod.Patches
         {
             List<RoleInfo> infos = RoleInfo.getRoleInfoForPlayer(PlayerControl.LocalPlayer);
             RoleInfo roleInfo = infos.FirstOrDefault();
-            // TODO
-            // add sheriff
-            if (roleInfo != null && (roleInfo.roleId == RoleId.Madmate)) {
+            if (roleInfo != null &&
+                (roleInfo.roleId == RoleId.Madmate ||
+                 roleInfo.roleId == RoleId.Sheriff)) {
                 __instance.YouAreText.color = roleInfo.color;
                 __instance.RoleText.text = roleInfo.name;
                 __instance.RoleText.color = roleInfo.color;

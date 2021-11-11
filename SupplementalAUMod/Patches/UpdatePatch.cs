@@ -22,11 +22,8 @@ namespace AUMod.Patches
 
         static void setNameColors()
         {
-            /*
-             * TODO
             if (Sheriff.sheriff != null && Sheriff.sheriff == PlayerControl.LocalPlayer)
                 setPlayerNameColor(Sheriff.sheriff, Sheriff.color);
-             */
             if (Madmate.madmate != null && Madmate.madmate == PlayerControl.LocalPlayer)
                 setPlayerNameColor(Madmate.madmate, Madmate.color);
         }
@@ -36,7 +33,7 @@ namespace AUMod.Patches
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
                 return;
 
-            /* CustomButton.HudUpdate(); */
+            CustomButton.HudUpdate();
             setNameColors();
         }
     }

@@ -12,12 +12,7 @@ public static class TasksHandler {
     {
         int TotalTasks = 0;
         int CompletedTasks = 0;
-        if (!playerInfo.Disconnected &&
-            playerInfo.Tasks != null &&
-            playerInfo.Object &&
-            (PlayerControl.GameOptions.GhostsDoTasks || !playerInfo.IsDead) &&
-            !playerInfo.Role.IsImpostor &&
-            !playerInfo.Object.hasFakeTasks()) {
+        if (!playerInfo.Disconnected && playerInfo.Tasks != null && playerInfo.Object && (PlayerControl.GameOptions.GhostsDoTasks || !playerInfo.IsDead) && !playerInfo.Role.IsImpostor && !playerInfo.Object.hasFakeTasks()) {
 
             for (int j = 0; j < playerInfo.Tasks.Count; j++) {
                 TotalTasks++;
@@ -33,6 +28,8 @@ public static class TasksHandler {
     private static class GameDataRecomputeTaskCountsPatch {
         private static bool Prefix(GameData __instance)
         {
+            if (!AmongUsClient.Instance.AmHost)
+                return false;
             __instance.TotalTasks = 0;
             __instance.CompletedTasks = 0;
             for (int i = 0; i < __instance.AllPlayers.Count; i++) {

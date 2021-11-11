@@ -22,15 +22,12 @@ class RoleInfo {
         this.roleId = roleId;
     }
 
-    /*
-     * TODO
     public static RoleInfo sheriff = new RoleInfo(
         "Sheriff",
         Sheriff.color,
         "Shoot the <color=#FF1919FF>Impostors</color>",
         "Shoot the Impostors",
         RoleId.Sheriff);
-     */
     public static RoleInfo madmate = new RoleInfo(
         "Madmate",
         Madmate.color,
@@ -51,8 +48,7 @@ class RoleInfo {
     public static List<RoleInfo> allRoleInfos = new List<RoleInfo>() {
         impostor,
         crewmate,
-        // TODO
-        // sheriff,
+        sheriff,
         madmate
     };
 
@@ -63,11 +59,8 @@ class RoleInfo {
             return infos;
 
         // Special roles
-        /*
-         * TODO
         if (p == Sheriff.sheriff)
             infos.Add(sheriff);
-         */
         if (p == Madmate.madmate)
             infos.Add(madmate);
         if (infos.Count == 0 && p.Data.Role.IsImpostor)

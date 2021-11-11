@@ -18,37 +18,33 @@ public static class Roles {
 
     public static void clearAndReloadRoles()
     {
-        /* Sheriff.clearAndReload(); */
+        Sheriff.clearAndReload();
         Madmate.clearAndReload();
     }
 
-    /*
-            public static class Sheriff {
-                public static PlayerControl sheriff;
-                public static Color color = new Color32(248, 205, 70, byte.MaxValue);
+    public static class Sheriff {
+        public static PlayerControl sheriff;
+        public static Color color = new Color32(248, 205, 70, byte.MaxValue);
 
-                public static float cooldown = 30f;
-                public static int remainingShots = 1;
-                public static bool canKillNeutrals = false;
-                public static bool canKillCrewmates = false;
-                public static bool spyCanDieToSheriff = false;
-                public static bool madmateCanDieToSheriff = false;
+        public static float cooldown = 30f;
+        public static int remainingShots = 1;
+        public static bool canKillNeutrals = false;
+        public static bool canKillCrewmates = false;
+        public static bool madmateCanDieToSheriff = false;
 
-                public static PlayerControl currentTarget;
+        public static PlayerControl currentTarget;
 
-                public static void clearAndReload() {
-                    sheriff = null;
-                    currentTarget = null;
-                    cooldown = CustomOptionHolder.sheriffCooldown.getFloat();
-                    remainingShots =
-       Mathf.RoundToInt(CustomOptionHolder.sheriffNumberOfShots.getFloat()); canKillNeutrals =
-       CustomOptionHolder.sheriffCanKillNeutrals.getBool(); canKillCrewmates =
-       CustomOptionHolder.sheriffCanKillCrewmates.getBool(); spyCanDieToSheriff =
-       CustomOptionHolder.spyCanDieToSheriff.getBool(); madmateCanDieToSheriff =
-       CustomOptionHolder.madmateCanDieToSheriff.getBool();
-                }
-            }
-    */
+        public static void clearAndReload()
+        {
+            sheriff = null;
+            currentTarget = null;
+            cooldown = CustomOptionHolder.sheriffCooldown.getFloat();
+            remainingShots = Mathf.RoundToInt(CustomOptionHolder.sheriffNumberOfShots.getFloat());
+            canKillNeutrals = CustomOptionHolder.sheriffCanKillNeutrals.getBool();
+            canKillCrewmates = CustomOptionHolder.sheriffCanKillCrewmates.getBool();
+            madmateCanDieToSheriff = CustomOptionHolder.madmateCanDieToSheriff.getBool();
+        }
+    }
 
     public static class Madmate {
         public static PlayerControl madmate;

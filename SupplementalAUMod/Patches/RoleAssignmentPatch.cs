@@ -45,8 +45,7 @@ namespace AUMod.Patches
             // Note that the special roles (like Mafia or Lovers) are NOT included in these lists
             Dictionary<byte, int> crewSettings = new Dictionary<byte, int>();
 
-            // TODO
-            /* crewSettings.Add((byte)RoleId.Sheriff, CustomOptionHolder.sheriffSpawnRate.getSelection()); */
+            crewSettings.Add((byte)RoleId.Sheriff, CustomOptionHolder.sheriffSpawnRate.getSelection());
             crewSettings.Add((byte)RoleId.Madmate, CustomOptionHolder.madmateSpawnRate.getSelection());
 
             return new RoleAssignmentData {

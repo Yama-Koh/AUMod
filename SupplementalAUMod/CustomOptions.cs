@@ -21,15 +21,11 @@ public class CustomOptionHolder {
         public static CustomOption enabledAdminTimer;
      */
 
-    /*
-     * TODO
-     * For sheriff
-        public static CustomOption sheriffSpawnRate;
-        public static CustomOption sheriffCooldown;
-        public static CustomOption sheriffNumberOfShots;
-        public static CustomOption sheriffCanKillNeutrals;
-        public static CustomOption sheriffCanKillCrewmates;
-     */
+    public static CustomOption sheriffSpawnRate;
+    public static CustomOption sheriffCooldown;
+    public static CustomOption sheriffNumberOfShots;
+    public static CustomOption sheriffCanKillNeutrals;
+    public static CustomOption sheriffCanKillCrewmates;
 
     public static CustomOption madmateSpawnRate;
     public static CustomOption madmateCanDieToSheriff;
@@ -56,13 +52,13 @@ public class CustomOptionHolder {
          * TODO
         adminTimer = CustomOption.Create(100, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Admin Map Available Duration"), 10f, 0f, 120f, 1f);
         enabledAdminTimer = CustomOption.Create(101, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Enable Admin Map Available Duration"), false);
+        */
 
         sheriffSpawnRate = CustomOption.Create(110, cs(Sheriff.color, "Sheriff"), rates, null, true);
         sheriffCooldown = CustomOption.Create(111, "Sheriff Cooldown", 30f, 10f, 60f, 2.5f, sheriffSpawnRate);
         sheriffNumberOfShots = CustomOption.Create(112, "Sheriff Number Of Shots", 1f, 1f, 15f, 1f, sheriffSpawnRate);
         sheriffCanKillNeutrals = CustomOption.Create(113, "Sheriff Can Kill Neutrals", false, sheriffSpawnRate);
         sheriffCanKillCrewmates = CustomOption.Create(114, "Sheriff Can Kill Crewmates", false, sheriffSpawnRate);
-        */
 
         madmateSpawnRate = CustomOption.Create(120, cs(Madmate.color, "Madmate"), rates, null, true);
         madmateCanDieToSheriff = CustomOption.Create(121, "Madmate Can Die To Sheriff", true, madmateSpawnRate);
