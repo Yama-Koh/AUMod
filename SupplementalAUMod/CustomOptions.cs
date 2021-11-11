@@ -14,12 +14,8 @@ public class CustomOptionHolder {
     public static string[] rates = new string[] { "0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%" };
     public static string[] presets = new string[] { "Preset 1" };
 
-    /*
-     * TODO
-     * To limit admin use
-        public static CustomOption adminTimer;
-        public static CustomOption enabledAdminTimer;
-     */
+    public static CustomOption adminTimer;
+    public static CustomOption enabledAdminTimer;
 
     public static CustomOption sheriffSpawnRate;
     public static CustomOption sheriffCooldown;
@@ -47,12 +43,8 @@ public class CustomOptionHolder {
     public static void Load()
     {
 
-        // Using new id's for the options to not break compatibilty with older versions
-        /*
-         * TODO
         adminTimer = CustomOption.Create(100, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Admin Map Available Duration"), 10f, 0f, 120f, 1f);
-        enabledAdminTimer = CustomOption.Create(101, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Enable Admin Map Available Duration"), false);
-        */
+        enabledAdminTimer = CustomOption.Create(101, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "Enable Admin Map Available Duration"), true);
 
         sheriffSpawnRate = CustomOption.Create(110, cs(Sheriff.color, "Sheriff"), rates, null, true);
         sheriffCooldown = CustomOption.Create(111, "Sheriff Cooldown", 30f, 10f, 60f, 2.5f, sheriffSpawnRate);

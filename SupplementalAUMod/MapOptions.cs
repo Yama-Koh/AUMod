@@ -11,11 +11,13 @@ static class MapOptions {
 
     // Updating values
     public static float AdminTimer = 0f;
+    public static float VisibleAdminTimer = 0f;
 
     public static void clearAndReloadMapOptions()
     {
         /* AdminTimer = CustomOptionHolder.adminTimer.getFloat(); */
-        AdminTimer = 0f;
+        AdminTimer = 10f;
+        VisibleAdminTimer = 10f;
         showRoleSummary = true;
     }
 }

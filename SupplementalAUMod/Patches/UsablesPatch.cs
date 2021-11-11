@@ -25,6 +25,8 @@ namespace AUMod.Patches
             bool roleCouldUse = false;
             if (Madmate.canEnterVents && Madmate.madmate != null && Madmate.madmate == @object)
                 roleCouldUse = true;
+            else if (pc.Role.IsImpostor)
+                roleCouldUse = true;
 
             var usableDistance = __instance.UsableDistance;
 
@@ -111,6 +113,8 @@ namespace AUMod.Patches
 
     [HarmonyPatch]
     class AdminPanelPatch {
+        static Dictionary<SystemTypes, List<Color>> players = new Dictionary<SystemTypes, List<Color>>();
+
         [HarmonyPatch(typeof(MapConsole), nameof(MapConsole.CanUse))]
         class MapConsoleCanUsePatch {
             public static bool Prefix(MapConsole __instance,
@@ -124,8 +128,8 @@ namespace AUMod.Patches
 
                 if (PlayerControl.LocalPlayer.Data.IsDead)
                     return true;
-                /* if (CustomOptionHolder.enabledAdminTimer.getBool()) */
-                /*     return MapOptions.AdminTimer > 0; */
+                if (CustomOptionHolder.enabledAdminTimer.getBool())
+                    return MapOptions.AdminTimer > 0;
                 return true;
             }
         }
@@ -140,8 +144,6 @@ namespace AUMod.Patches
                 }
 
                 // Consume time to see admin map if the player is alive
-                /*
-                 * TODO
                 if (!PlayerControl.LocalPlayer.Data.IsDead) {
                     // Show the grey map if all time to see admin is consumed and the player is alive
                     if (MapOptions.AdminTimer <= 0) {
@@ -151,18 +153,112 @@ namespace AUMod.Patches
                     }
 
                     // Consume the time via RPC
-                    MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId,
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(
+                        PlayerControl.LocalPlayer.NetId,
                         (byte)CustomRPC.ConsumeAdminTime,
-                        Hazel.SendOption.Reliable);
+                        Hazel.SendOption.Reliable,
+                        -1);
                     writer.Write(__instance.timer);
-                    writer.EndMessage();
-                    // Reflect the consumed time to local (workaround)
-                    MapOptions.AdminTimer -= __instance.timer;
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.consumeAdminTime(__instance.timer);
                 }
-                 */
 
+                // reset timer
                 __instance.timer = 0f;
+
+                // save players (for future engineer)
+                players = new Dictionary<SystemTypes, List<Color>>();
+                bool commsActive = false;
+
+                // whether under comms sabotage
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks) {
+                    if (task.TaskType == TaskTypes.FixComms) {
+                        commsActive = true;
+                        break;
+                    }
+                }
+
+                // under comms sabotage
+                if (!__instance.isSab && commsActive) {
+                    __instance.isSab = true;
+                    __instance.BackgroundColor.SetColor(Palette.DisabledGrey);
+                    __instance.SabotageText.gameObject.SetActive(true);
+                    return false;
+                }
+
+                // already fixed comms sabotage
+                if (__instance.isSab && !commsActive) {
+                    __instance.isSab = false;
+                    __instance.BackgroundColor.SetColor(Color.green);
+                    __instance.SabotageText.gameObject.SetActive(false);
+                }
+
+                for (int i = 0; i < __instance.CountAreas.Length; i++) {
+                    CounterArea counterArea = __instance.CountAreas[i];
+                    List<Color> roomColors = new List<Color>();
+                    players.Add(counterArea.RoomType, roomColors);
+
+                    if (commsActive) {
+                        counterArea.UpdateCount(0);
+                    } else {
+                        PlainShipRoom plainShipRoom = ShipStatus.Instance.FastRooms[counterArea.RoomType];
+
+                        if (plainShipRoom == null || !plainShipRoom.roomArea) {
+                            // maybe error
+                            return false;
+                        }
+
+                        int numPlayers = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
+                        int numAlivePlayers = numPlayers;
+                        for (int j = 0; j < numPlayers; j++) {
+                            Collider2D collider2D = __instance.buffer[j];
+                            if (!(collider2D.tag == "DeadBody")) {
+                                PlayerControl component = collider2D.GetComponent<PlayerControl>();
+                                if (!component || component.Data == null || component.Data.Disconnected || component.Data.IsDead)
+                                    numAlivePlayers--;
+                                else if (component?.myRend?.material != null) {
+                                    Color color = component.myRend.material.GetColor("_BodyColor");
+                                    roomColors.Add(color);
+                                }
+                            } else {
+                                DeadBody component = collider2D.GetComponent<DeadBody>();
+                                if (!component)
+                                    continue;
+
+                                GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
+                                if (playerInfo == null)
+                                    continue;
+
+                                Color color = Color.green;
+                                roomColors.Add(color);
+                            }
+                        }
+                        counterArea.UpdateCount(numAlivePlayers);
+                    }
+                }
                 return false;
+            }
+        }
+
+        [HarmonyPatch(typeof(CounterArea), nameof(CounterArea.UpdateCount))]
+        class CounterAreaUpdateCountPatch {
+            private static Material defaultMat;
+            static void Postfix(CounterArea __instance)
+            {
+                if (players.ContainsKey(__instance.RoomType)) {
+                    List<Color> colors = players[__instance.RoomType];
+
+                    for (int i = 0; i < __instance.myIcons.Count; i++) {
+                        PoolableBehavior icon = __instance.myIcons[i];
+                        SpriteRenderer renderer = icon.GetComponent<SpriteRenderer>();
+
+                        if (renderer != null) {
+                            if (defaultMat == null)
+                                defaultMat = renderer.material;
+                            renderer.material = defaultMat;
+                        }
+                    }
+                }
             }
         }
     }

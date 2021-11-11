@@ -29,8 +29,7 @@ enum CustomRPC {
     // UseUncheckedVent,
     // UncheckedMurderPlayer,
     // UncheckedCmdReportDeadBody,
-    // TODO
-    // ConsumeAdminTime,
+    ConsumeAdminTime,
 
     // Role functionality
 
@@ -131,13 +130,10 @@ public static class RPCProcedure {
     }
      */
 
-    /*
-     * TODO
     public static void consumeAdminTime(float delta)
     {
         MapOptions.AdminTimer -= delta;
     }
-     */
 
     // Role functionality
 
@@ -215,13 +211,10 @@ class RPCHandlerPatch {
             RPCProcedure.uncheckedCmdReportDeadBody(reportSource, reportTarget);
             break;
          */
-            /*
-         * TODO
         case (byte)CustomRPC.ConsumeAdminTime:
             float delta = reader.ReadSingle();
             RPCProcedure.consumeAdminTime(delta);
             break;
-         */
 
         // Role functionality
         case (byte)CustomRPC.SheriffKill:
