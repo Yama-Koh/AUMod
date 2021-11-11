@@ -1,6 +1,6 @@
 # SupplementalAUMod
 
-You **must** distrubute a modified version of this software with source code.
+You **must** distrubute source code whenever you distrubute a modified version of this software.
 
 Supporting only Madmate and Sheriff.
 Custom options are not avilable.
