@@ -1,6 +1,6 @@
 # SupplementalAUMod
 
-Supporting only Madmate, so far.
+Supporting only Madmate and Sheriff.
 
 This mod is based on [TheOtherRoles](https://github.com/Eisbison/TheOtherRoles)
 
