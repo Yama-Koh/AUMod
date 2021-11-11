@@ -1,6 +1,9 @@
 # SupplementalAUMod
 
+You **must** distrubute a modified version of this software with source code.
+
 Supporting only Madmate and Sheriff.
+Custom options are not avilable.
 
 This mod is based on [TheOtherRoles](https://github.com/Eisbison/TheOtherRoles)
 
