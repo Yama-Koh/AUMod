@@ -8,8 +8,7 @@ using UnityEngine.UI;
 namespace AUMod {
 public class CustomButton {
     public static List<CustomButton> buttons = new List<CustomButton>();
-    public KillButton killButton;
-    public Vector3 PositionOffset;
+    public ActionButton actionButton;
     public float MaxTimer = float.MaxValue;
     public float Timer = 0f;
     private Action OnClick;
@@ -19,40 +18,50 @@ public class CustomButton {
     private Action OnEffectEnds;
     public bool HasEffect;
     public bool isEffectActive = false;
-    private bool showButtonText = false;
     public float EffectDuration;
-    public Sprite Sprite;
     private HudManager hudManager;
-    private bool mirror;
     private KeyCode? hotkey;
 
-    public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, KeyCode? hotkey, bool HasEffect, float EffectDuration, Action OnEffectEnds, bool mirror = false)
+    public CustomButton(
+        Action OnClick,
+        Func<bool> HasButton,
+        Func<bool> CouldUse,
+        Action OnMeetingEnds,
+        ActionButton baseButton,
+        HudManager hudManager,
+        KeyCode? hotkey,
+        bool HasEffect,
+        float EffectDuration,
+        Action OnEffectEnds)
     {
         this.hudManager = hudManager;
         this.OnClick = OnClick;
         this.HasButton = HasButton;
         this.CouldUse = CouldUse;
-        this.PositionOffset = PositionOffset;
         this.OnMeetingEnds = OnMeetingEnds;
         this.HasEffect = HasEffect;
         this.EffectDuration = EffectDuration;
         this.OnEffectEnds = OnEffectEnds;
-        this.Sprite = Sprite;
-        this.mirror = mirror;
         this.hotkey = hotkey;
         Timer = 16.2f;
         buttons.Add(this);
-        killButton = UnityEngine.Object.Instantiate(hudManager.KillButton, hudManager.transform);
-        this.showButtonText = killButton.graphic.sprite == Sprite;
-        PassiveButton button = killButton.GetComponent<PassiveButton>();
+        actionButton = UnityEngine.Object.Instantiate(baseButton, hudManager.transform);
+        PassiveButton button = actionButton.GetComponent<PassiveButton>();
         button.OnClick = new Button.ButtonClickedEvent();
         button.OnClick.AddListener((UnityEngine.Events.UnityAction)onClickEvent);
 
         setActive(false);
     }
 
-    public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, KeyCode? hotkey, bool mirror = false)
-        : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, hotkey, false, 0f, () => {}, mirror)
+    public CustomButton(
+        Action OnClick,
+        Func<bool> HasButton,
+        Func<bool> CouldUse,
+        Action OnMeetingEnds,
+        ActionButton baseButton,
+        HudManager hudManager,
+        KeyCode? hotkey)
+        : this(OnClick, HasButton, CouldUse, OnMeetingEnds, baseButton, hudManager, hotkey, false, 0f, () => {})
     {
     }
 
@@ -61,11 +70,11 @@ public class CustomButton {
         if (this.Timer < 0f && HasButton() && CouldUse()) {
             this.OnClick();
 
-            killButton.SetDisabled();
+            actionButton.SetDisabled();
 
             if (this.HasEffect && !this.isEffectActive) {
                 this.Timer = this.EffectDuration;
-                killButton.SetEnabled();
+                actionButton.SetEnabled();
                 this.isEffectActive = true;
             }
         }
@@ -73,7 +82,7 @@ public class CustomButton {
 
     public static void HudUpdate()
     {
-        buttons.RemoveAll(item => item.killButton == null);
+        buttons.RemoveAll(item => item.actionButton == null);
 
         for (int i = 0; i < buttons.Count; i++) {
             try {
@@ -86,7 +95,7 @@ public class CustomButton {
 
     public static void MeetingEndedUpdate()
     {
-        buttons.RemoveAll(item => item.killButton == null);
+        buttons.RemoveAll(item => item.actionButton == null);
         for (int i = 0; i < buttons.Count; i++) {
             try {
                 buttons[i].OnMeetingEnds();
@@ -112,9 +121,9 @@ public class CustomButton {
     public void setActive(bool isActive)
     {
         if (isActive)
-            killButton.Show();
+            actionButton.Show();
         else
-            killButton.Hide();
+            actionButton.Hide();
     }
 
     private void Update()
@@ -127,9 +136,9 @@ public class CustomButton {
         setActive(true);
 
         if (CouldUse()) {
-            killButton.SetEnabled();
+            actionButton.SetEnabled();
         } else {
-            killButton.SetDisabled();
+            actionButton.SetDisabled();
         }
 
         if (Timer >= 0) {
@@ -142,11 +151,11 @@ public class CustomButton {
         // using
         if (Timer <= 0 && HasEffect && isEffectActive) {
             isEffectActive = false;
-            killButton.SetEnabled();
+            actionButton.SetEnabled();
             OnEffectEnds();
         }
 
-        killButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
+        actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
 
         // Trigger OnClickEvent if the hotkey is being pressed down
         if (hotkey.HasValue && Input.GetKeyDown(hotkey.Value))

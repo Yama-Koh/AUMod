@@ -50,8 +50,7 @@ static class HudManagerStartPatch {
             () => {
                 sheriffKillButton.Timer = sheriffKillButton.MaxTimer;
             },
-            __instance.KillButton.graphic.sprite,
-            new Vector3(-1.3f, 0, 0),
+            __instance.KillButton,
             __instance,
             KeyCode.Q
         );
