@@ -1,4 +1,4 @@
-# SupplementalAUMod
+# SupplementalAmongUsMod
 
 You **must** distrubute source code whenever you distrubute a modified version of this software.
 
