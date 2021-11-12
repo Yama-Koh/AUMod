@@ -2,6 +2,8 @@
 
 You **must** distrubute source code whenever you distrubute a modified version of this software.
 
+Pull requests are always welcome.
+
 Supporting only Madmate and Sheriff.
 Custom options are not avilable.
 
