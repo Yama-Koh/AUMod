@@ -54,9 +54,12 @@ public static class Roles {
         public static bool hasImpostorVision = true;
         public static bool canFixComm = false;
 
+        public static Vent currentTarget = null;
+
         public static void clearAndReload()
         {
             madmate = null;
+            currentTarget = null;
             canEnterVents = CustomOptionHolder.madmateCanEnterVents.getBool();
             hasImpostorVision = CustomOptionHolder.madmateHasImpostorVision.getBool();
             canFixComm = CustomOptionHolder.madmateCanFixComm.getBool();

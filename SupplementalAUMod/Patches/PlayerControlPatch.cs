@@ -54,6 +54,25 @@ namespace AUMod.Patches
             return result;
         }
 
+        static Vent setTargetVent()
+        {
+            if (!ShipStatus.Instance)
+                return null;
+
+            GameData.PlayerInfo me = GameData.Instance.GetPlayerById(PlayerControl.LocalPlayer.PlayerId);
+            UnhollowerBaseLib.Il2CppReferenceArray<Vent> allVents = ShipStatus.Instance.AllVents;
+
+            for (int i = 0; i < allVents.Count; i++) {
+                Vent vent = allVents[i];
+                float useless = 0;
+                bool canUse, couldUse;
+                VentCanUsePatch.Prefix(vent, ref useless, me, out canUse, out couldUse);
+                if (canUse)
+                    return vent;
+            }
+            return null;
+        }
+
         static void setPlayerOutline(PlayerControl target, Color color)
         {
             if (target == null || target.myRend == null)
@@ -72,6 +91,14 @@ namespace AUMod.Patches
                     continue;
                 target.myRend.material.SetFloat("_Outline", 0f);
             }
+        }
+
+        // looking for an available vent
+        static void madmateSetTarget()
+        {
+            if (Madmate.madmate == null || Madmate.madmate != PlayerControl.LocalPlayer)
+                return;
+            Madmate.currentTarget = setTargetVent();
         }
 
         static void sheriffSetTarget()
@@ -157,6 +184,8 @@ namespace AUMod.Patches
                 // Update Player Info
                 updatePlayerInfo();
 
+                // Madmate
+                madmateSetTarget();
                 // Sheriff
                 sheriffSetTarget();
                 // Impostor

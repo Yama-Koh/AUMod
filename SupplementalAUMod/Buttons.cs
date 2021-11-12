@@ -3,11 +3,13 @@ using Hazel;
 using System;
 using UnityEngine;
 using static AUMod.Roles;
+using AUMod.Patches;
 
 namespace AUMod {
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
 static class HudManagerStartPatch {
     private static CustomButton sheriffKillButton;
+    private static CustomButton madmateVentButton;
 
     public static void setCustomButtonCooldowns()
     {
@@ -53,6 +55,28 @@ static class HudManagerStartPatch {
             __instance.KillButton,
             __instance,
             KeyCode.Q
+        );
+
+        madmateVentButton = new CustomButton(
+            () => {
+                if (Madmate.currentTarget == null)
+                    return;
+                VentUsePatch.Prefix(Madmate.currentTarget);
+            },
+            () => {
+                return Madmate.madmate != null &&
+                  Madmate.madmate == PlayerControl.LocalPlayer &&
+                  !PlayerControl.LocalPlayer.Data.IsDead;
+            },
+            () => {
+                return Madmate.currentTarget &&
+                  (PlayerControl.LocalPlayer.CanMove || PlayerControl.LocalPlayer.inVent);
+            },
+            () => {
+            },
+            __instance.ImpostorVentButton,
+            __instance,
+            KeyCode.V
         );
 
         // Set the default (or settings from the previous game) timers/durations when spawning the buttons
