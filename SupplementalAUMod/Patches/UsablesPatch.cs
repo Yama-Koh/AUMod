@@ -19,6 +19,12 @@ namespace AUMod.Patches
             [HarmonyArgument(1)] out bool canUse,
             [HarmonyArgument(2)] out bool couldUse)
         {
+            if (pc.Role.Role == RoleTypes.Engineer) {
+                canUse = true;
+                couldUse = true;
+                return true;
+            }
+
             float num = float.MaxValue;
             PlayerControl @object = pc.Object;
 
