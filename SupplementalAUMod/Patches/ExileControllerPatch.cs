@@ -36,6 +36,8 @@ namespace AUMod.Patches
         {
             // Reset custom button timers where necessary
             CustomButton.MeetingEndedUpdate();
+
+            MapOptions.MeetingEndedUpdate();
         }
     }
 }
