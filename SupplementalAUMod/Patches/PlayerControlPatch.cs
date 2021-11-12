@@ -165,13 +165,13 @@ namespace AUMod.Patches
         }
     }
 
-    /*
-     * TODO
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
     public static class MurderPlayerPatch {
         public static bool resetToCrewmate = false;
         public static bool resetToDead = false;
 
+        /*
+         * TODO
         public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
             // Allow everyone to murder players
@@ -180,6 +180,7 @@ namespace AUMod.Patches
             __instance.Data.Role.IsImpostor = true;
             __instance.Data.IsDead = false;
         }
+         */
 
         public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
@@ -187,18 +188,19 @@ namespace AUMod.Patches
             DeadPlayer deadPlayer = new DeadPlayer(target, DateTime.UtcNow, DeathReason.Kill, __instance);
             GameHistory.deadPlayers.Add(deadPlayer);
 
-            // Reset killer to crewmate if resetToCrewmate
+            /*
+             * TODO
             if (resetToCrewmate)
                 __instance.Data.Role.IsImpostor = false;
             if (resetToDead)
                 __instance.Data.IsDead = true;
+             */
 
             // Remove fake tasks when player dies
             if (target.hasFakeTasks())
                 target.clearAllTasks();
         }
     }
-     */
 
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Exiled))]
     public static class ExilePlayerPatch {
