@@ -18,7 +18,7 @@ namespace AUMod {
 [BepInProcess("Among Us.exe")]
 public class AUModPlugin : BasePlugin {
     public const string Id = "me.tomarai.aumod";
-    public const string VersionString = "0.1.0";
+    public const string VersionString = "0.2.0";
     public static System.Version Version = System.Version.Parse(VersionString);
 
     public Harmony Harmony { get; } = new Harmony(Id);
