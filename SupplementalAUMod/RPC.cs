@@ -22,7 +22,7 @@ enum CustomRPC {
     // Main Controls
 
     ResetVaribles = 50,
-    // ShareOptionSelection,
+    ShareOptionSelection,
     // ForceEnd,
     SetRole,
     VersionHandshake,
@@ -48,14 +48,14 @@ public static class RPCProcedure {
         setCustomButtonCooldowns();
     }
 
-    /*
-     * TODO
     public static void shareOptionSelection(uint id, uint selection)
     {
         CustomOption option = CustomOption.options.FirstOrDefault(option => option.id == (int)id);
         option.updateSelection((int)selection);
     }
 
+    /*
+     * TODO
     public static void forceEnd()
     {
         foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
@@ -158,13 +158,13 @@ class RPCHandlerPatch {
         case (byte)CustomRPC.ResetVaribles:
             RPCProcedure.resetVariables();
             break;
-        /*
-         * TODO
         case (byte)CustomRPC.ShareOptionSelection:
             uint id = reader.ReadPackedUInt32();
             uint selection = reader.ReadPackedUInt32();
             RPCProcedure.shareOptionSelection(id, selection);
             break;
+        /*
+         * TODO
         case (byte)CustomRPC.ForceEnd:
             RPCProcedure.forceEnd();
             break;
