@@ -267,5 +267,13 @@ namespace AUMod.Patches
                 }
             }
         }
+
+        [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowSabotageMap))]
+        class ShowSabotageMapPatch {
+            static void Postfix(MapBehaviour __instance)
+            {
+                __instance.taskOverlay.Hide();
+            }
+        }
     }
 }
