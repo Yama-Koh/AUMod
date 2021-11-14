@@ -15,8 +15,7 @@ static class MapOptions {
 
     public static void clearAndReloadMapOptions()
     {
-        /* AdminTimer = CustomOptionHolder.adminTimer.getFloat(); */
-        AdminTimer = 10f;
+        AdminTimer = CustomOptionHolder.adminTimer.getFloat();
         ClearAdminTimerText();
         UpdateAdminTimerText();
         showRoleSummary = true;
@@ -30,6 +29,8 @@ static class MapOptions {
 
     private static void UpdateAdminTimerText()
     {
+        if (!CustomOptionHolder.enabledAdminTimer.getBool())
+            return;
         if (HudManager.Instance == null)
             return;
         AdminTimerText = UnityEngine.Object.Instantiate(HudManager.Instance.TaskText, HudManager.Instance.transform);
