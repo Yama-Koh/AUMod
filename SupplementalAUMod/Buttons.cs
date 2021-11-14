@@ -65,6 +65,7 @@ static class HudManagerStartPatch {
             },
             () => {
                 return Madmate.madmate != null &&
+                  Madmate.canEnterVents &&
                   Madmate.madmate == PlayerControl.LocalPlayer &&
                   !PlayerControl.LocalPlayer.Data.IsDead;
             },
