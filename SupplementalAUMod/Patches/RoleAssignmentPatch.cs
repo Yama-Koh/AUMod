@@ -57,7 +57,7 @@ namespace AUMod.Patches
         private static void assignEnsuredRoles(RoleAssignmentData data)
         {
             // Get all roles where the chance to occur is set to 100%
-            List<byte> ensuredCrewmateRoles = data.crewSettings.Select(x => x.Key).ToList();
+            List<byte> ensuredCrewmateRoles = data.crewSettings.Where(x => x.Value == CustomOptionHolder.rates.Length - 1).Select(x => x.Key).ToList();
             int crewmateRolesCount = ensuredCrewmateRoles.Count;
 
             // Assign roles until we run out of either players we can assign roles to or run out of roles we can assign to players
