@@ -37,34 +37,26 @@ namespace AUMod.Patches
             __result = false;
         }
 
-        /*
-         * TODO
-         * Number of Tasks
-         */
-        /* private static int originalNumCommonTasksOption = 0; */
-        /* private static int originalNumShortTasksOption = 0; */
-        /* private static int originalNumLongTasksOption = 0; */
+        private static int originalNumCommonTasksOption = 0;
+        private static int originalNumShortTasksOption = 0;
+        private static int originalNumLongTasksOption = 0;
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Begin))]
         public static bool Prefix(ShipStatus __instance)
         {
-            /*
-             * TODO
-             * Number of Tasks
-             */
-            /* var commonTaskCount = __instance.CommonTasks.Count; */
-            /* var normalTaskCount = __instance.NormalTasks.Count; */
-            /* var longTaskCount = __instance.LongTasks.Count; */
-            /* originalNumCommonTasksOption = PlayerControl.GameOptions.NumCommonTasks; */
-            /* originalNumShortTasksOption = PlayerControl.GameOptions.NumShortTasks; */
-            /* originalNumLongTasksOption = PlayerControl.GameOptions.NumLongTasks; */
-            /* if (PlayerControl.GameOptions.NumCommonTasks > commonTaskCount) */
-            /*     PlayerControl.GameOptions.NumCommonTasks = commonTaskCount; */
-            /* if (PlayerControl.GameOptions.NumShortTasks > normalTaskCount) */
-            /*     PlayerControl.GameOptions.NumShortTasks = normalTaskCount; */
-            /* if (PlayerControl.GameOptions.NumLongTasks > longTaskCount) */
-            /*     PlayerControl.GameOptions.NumLongTasks = longTaskCount; */
+            var commonTaskCount = __instance.CommonTasks.Count;
+            var normalTaskCount = __instance.NormalTasks.Count;
+            var longTaskCount = __instance.LongTasks.Count;
+            originalNumCommonTasksOption = PlayerControl.GameOptions.NumCommonTasks;
+            originalNumShortTasksOption = PlayerControl.GameOptions.NumShortTasks;
+            originalNumLongTasksOption = PlayerControl.GameOptions.NumLongTasks;
+            if (PlayerControl.GameOptions.NumCommonTasks > commonTaskCount)
+                PlayerControl.GameOptions.NumCommonTasks = commonTaskCount;
+            if (PlayerControl.GameOptions.NumShortTasks > normalTaskCount)
+                PlayerControl.GameOptions.NumShortTasks = normalTaskCount;
+            if (PlayerControl.GameOptions.NumLongTasks > longTaskCount)
+                PlayerControl.GameOptions.NumLongTasks = longTaskCount;
             return true;
         }
 
@@ -72,14 +64,10 @@ namespace AUMod.Patches
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Begin))]
         public static void Postfix3(ShipStatus __instance)
         {
-            /*
-             * TODO
-             * Number of Tasks
-             */
             // Restore original settings after the tasks have been selected
-            /* PlayerControl.GameOptions.NumCommonTasks = originalNumCommonTasksOption; */
-            /* PlayerControl.GameOptions.NumShortTasks = originalNumShortTasksOption; */
-            /* PlayerControl.GameOptions.NumLongTasks = originalNumLongTasksOption; */
+            PlayerControl.GameOptions.NumCommonTasks = originalNumCommonTasksOption;
+            PlayerControl.GameOptions.NumShortTasks = originalNumShortTasksOption;
+            PlayerControl.GameOptions.NumLongTasks = originalNumLongTasksOption;
         }
     }
 }
